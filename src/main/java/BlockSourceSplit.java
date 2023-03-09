@@ -36,6 +36,10 @@ public class BlockSourceSplit implements SourceSplit {
         return Optional.ofNullable(this.readerPosition);
     }
 
+    public BlockSourceSplit updateWithCheckpointedPosition(@Nullable CheckpointedPosition position) {
+        return new BlockSourceSplit(this.id, this.blockStart, this.blockEnd, position);
+    }
+
     public String toString() {
         return String.format("BlockSourceSplit: [%s, %s] ID=%s position=%s", this.blockStart, this.blockEnd, this.id, this.readerPosition);
     }
