@@ -21,7 +21,8 @@ public class BlockSourceSplitState<SplitT extends BlockSourceSplit> {
         }
     }
 
-    public SplitT toFileSourceSplit() {
+//    public SplitT toFileSourceSplit() {
+    public SplitT toBlockSourceSplit() {
         CheckpointedPosition position = this.offset == -1L && this.recordsToSkipAfterOffset == 0L ? null : new CheckpointedPosition(this.offset, this.recordsToSkipAfterOffset);
         BlockSourceSplit updatedSplit = this.split.updateWithCheckpointedPosition(position);
         if (updatedSplit == null) {
@@ -31,5 +32,10 @@ public class BlockSourceSplitState<SplitT extends BlockSourceSplit> {
         } else {
             return (SplitT) updatedSplit;
         }
+    }
+
+    public void setPosition(long offset, long recordsToSkipAfterOffset) {
+        this.offset = offset;
+        this.recordsToSkipAfterOffset = recordsToSkipAfterOffset;
     }
 }

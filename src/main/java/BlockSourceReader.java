@@ -11,8 +11,19 @@ import java.util.function.Supplier;
 
 public final class BlockSourceReader<T, SplitT extends BlockSourceSplit> extends SingleThreadMultiplexSourceReaderBase<RecordAndPosition<T>, T, SplitT, BlockSourceSplitState<SplitT>> {
 
-    public BlockSourceReader(Supplier<SplitReader<RecordAndPosition<T>, SplitT>> splitReaderSupplier, RecordEmitter<RecordAndPosition<T>, T, BlockSourceSplitState<SplitT>> recordEmitter, Configuration config, SourceReaderContext context) {
-        super(splitReaderSupplier, recordEmitter, config, context);
+//    public BlockSourceReader(SourceReaderContext readerContext, )
+//    public BlockSourceReader(Supplier<SplitReader<RecordAndPosition<T>, SplitT>> splitReaderSupplier, RecordEmitter<RecordAndPosition<T>, T, BlockSourceSplitState<SplitT>> recordEmitter, Configuration config, SourceReaderContext context) {
+//        super(splitReaderSupplier, recordEmitter, config, context);
+//    }
+    public BlockSourceReader(SourceReaderContext readerContext, BlockBulkFormat<T, SplitT> readerFormat, Configuration config) {
+        super(
+                () -> {
+                    return new BlockSourceSplitReader(config, readerFormat);
+                },
+                new BlockSourceRecordEmitter(),
+                config,
+                readerContext
+        );
     }
 
     @Override
@@ -27,6 +38,6 @@ public final class BlockSourceReader<T, SplitT extends BlockSourceSplit> extends
 
     @Override
     protected SplitT toSplitType(String s, BlockSourceSplitState<SplitT> splitTBlockSourceSplitState) {
-        return splitTBlockSourceSplitState.toFileSourceSplit();
+        return splitTBlockSourceSplitState.toBlockSourceSplit();
     }
 }

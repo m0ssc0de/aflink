@@ -21,6 +21,7 @@ object MyFlinkApp {
         var d = env.fromSource(source, WatermarkStrategy.noWatermarks(),  "MySourceName")
         d.print("ddd")
 
+
          env.execute("My Flink App")
     }
 }
